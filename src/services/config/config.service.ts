@@ -7,13 +7,14 @@ export class ConfigService implements ConfigServiceInterface {
 
   constructor(envConfig: DotenvConfigOutput) {
     try {
-      console.log('envConfig', envConfig.parsed)
-
       const configSchema = z.object({
         PORT: z.coerce.number().default(3000),
         REDIS_URL: z.url()
       })
-      const validatedConfig = configSchema.parse(envConfig.parsed)
+      const validatedConfig = configSchema.parse({
+        ...process.env,
+        ...envConfig.parsed
+      })
 
       this.config = validatedConfig
     } catch (error) {
