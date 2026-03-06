@@ -19,7 +19,7 @@ export class ConfigService implements ConfigServiceInterface {
       this.config = validatedConfig
     } catch (error) {
       console.error('Failed to load config', { cause: error })
-      process.exit(1)
+      throw new Error('Failed to load config', { cause: error })
     }
   }
 }

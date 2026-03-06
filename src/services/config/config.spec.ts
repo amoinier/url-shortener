@@ -1,12 +1,7 @@
 import { ConfigService } from './config.service'
 
 describe('ConfigService', () => {
-  let processExitSpy: jest.SpyInstance
-
   beforeEach(() => {
-    processExitSpy = jest
-      .spyOn(process, 'exit')
-      .mockImplementation(() => undefined as never)
     jest.spyOn(console, 'error').mockImplementation(() => {})
     jest.spyOn(console, 'log').mockImplementation(() => {})
   })
@@ -40,26 +35,18 @@ describe('ConfigService', () => {
   })
 
   it('should exit process when REDIS_URL is missing', () => {
-    new ConfigService({
-      parsed: {}
-    })
-
-    expect(processExitSpy).toHaveBeenCalledWith(1)
+    expect(() => new ConfigService({ parsed: {} })).toThrow(
+      'Failed to load config'
+    )
   })
 
   it('should exit process when REDIS_URL is invalid', () => {
-    new ConfigService({
-      parsed: {
-        REDIS_URL: 'not-a-url'
-      }
-    })
-
-    expect(processExitSpy).toHaveBeenCalledWith(1)
+    expect(
+      () => new ConfigService({ parsed: { REDIS_URL: 'not-a-url' } })
+    ).toThrow('Failed to load config')
   })
 
   it('should exit process when parsed config is undefined', () => {
-    new ConfigService({})
-
-    expect(processExitSpy).toHaveBeenCalledWith(1)
+    expect(() => new ConfigService({})).toThrow('Failed to load config')
   })
 })
