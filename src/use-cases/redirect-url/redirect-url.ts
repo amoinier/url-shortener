@@ -18,6 +18,8 @@ export class RedirectUrlUseCase implements RedirectUrlInterface {
 
   async execute(input: RedirectUrlInput): RedirectUrlResponse {
     try {
+      console.debug('Redirecting URL', { shortId: input.shortId })
+
       const url = await this.urlStorageService.getUrl(input.shortId)
 
       await this.urlStorageService.incrementUsageCount(input.shortId)

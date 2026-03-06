@@ -18,7 +18,7 @@ describe('healthCheck use-case', () => {
       .mockRejectedValue(new Error('Redis connection error'))
 
     await expect(healthCheck.execute()).rejects.toThrow(
-      'Redis connection error'
+      'Failed to check health'
     )
   })
 

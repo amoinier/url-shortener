@@ -6,6 +6,7 @@ import {
   UrlStorageInterface,
   IncrementUsageCountResponse
 } from '../url-storage.types'
+import { redisUrlStorageSchema } from './redis-url-storage.schema'
 
 export class RedisUrlStorageService implements UrlStorageInterface {
   private readonly redisService: RedisServiceInterface
@@ -28,7 +29,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     try {
       await this.redisService.hSet(shortId, { url, usageCount: 0 })
     } catch (error) {
-      throw new Error('Failed to set URL')
+      throw new Error('Failed to set URL', { cause: error })
     }
   }
 
@@ -39,11 +40,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
       keys.map(async (key) => {
         const element = await this.redisService.hGetAll(key)
 
-        return {
-          shortId: key,
-          url: element.url.toString(),
-          usageCount: parseInt(element.usageCount.toString(), 10)
-        }
+        return redisUrlStorageSchema.parse(element)
       })
     )
 
@@ -54,7 +51,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     try {
       return this.redisService.hIncrBy(shortId, 'usageCount', 1)
     } catch (error) {
-      throw new Error('Failed to increment usage count')
+      throw new Error('Failed to increment usage count', { cause: error })
     }
   }
 }

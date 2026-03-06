@@ -52,6 +52,8 @@ describe('getShortUrlAnalytics use-case', () => {
       .mockRejectedValue(new Error('Redis error'))
 
     expect(urlStorageServiceMock.getAllUrls).not.toHaveBeenCalled()
-    await expect(getShortUrlAnalytics.execute()).rejects.toThrow('Redis error')
+    await expect(getShortUrlAnalytics.execute()).rejects.toThrow(
+      'Failed to get short URL analytics'
+    )
   })
 })

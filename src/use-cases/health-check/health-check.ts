@@ -12,8 +12,16 @@ export class HealthCheckUseCase implements HealthCheckUseCaseInterface {
   }
 
   async execute(): HealthCheckResponse {
-    return {
-      redis: await this.redisService.healthCheck()
+    try {
+      console.debug('Checking health')
+
+      return {
+        redis: await this.redisService.healthCheck()
+      }
+    } catch (error) {
+      console.error('Failed to check health', { cause: error })
+
+      throw new Error('Failed to check health', { cause: error })
     }
   }
 }

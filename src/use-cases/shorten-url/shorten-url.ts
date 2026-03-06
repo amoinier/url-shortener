@@ -5,6 +5,7 @@ import {
   ShortenUrlInterface,
   ShortenUrlResponse
 } from './shorten-url.types'
+import { SHORT_URL_LENGTH } from '../../constant'
 
 export class ShortenUrlUseCase implements ShortenUrlInterface {
   private readonly urlStorageService: UrlStorageInterface
@@ -19,7 +20,8 @@ export class ShortenUrlUseCase implements ShortenUrlInterface {
 
   async execute(input: ShortenUrlInput): ShortenUrlResponse {
     try {
-      const id = nanoid(8)
+      console.debug('Shortening URL', { url: input.url })
+      const id = nanoid(SHORT_URL_LENGTH)
       await this.urlStorageService.setUrl(id, input.url)
 
       return { shortId: id }

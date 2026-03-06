@@ -16,10 +16,17 @@ export class GetShortUrlAnalyticsUseCase implements GetShortUrlAnalyticsInterfac
   }
 
   async execute(): GetShortUrlAnalyticsResponse {
-    const urls = await this.urlStorageService.getAllUrls()
+    try {
+      console.debug('Getting short URL analytics')
+      const urls = await this.urlStorageService.getAllUrls()
 
-    return {
-      analytics: urls
+      return {
+        analytics: urls
+      }
+    } catch (error) {
+      console.error('Failed to get short URL analytics', { cause: error })
+
+      throw new Error('Failed to get short URL analytics', { cause: error })
     }
   }
 }
