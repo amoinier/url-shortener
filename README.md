@@ -184,6 +184,18 @@ src/
 test/                  # E2E tests
 ```
 
+## Roadmap
+
+Planned features and improvements:
+
+- **Custom aliases** — Let users choose their own short slug (`POST /api/shorturl` with an optional `alias` field)
+- **Link expiration** — TTL support so short URLs auto-expire after a configurable duration
+- **Detailed click analytics** — Track timestamp, referrer, user-agent and country per visit instead of a simple counter
+- **Pagination for analytics** — Cursor-based pagination on `GET /api/shorturl/analytics` to handle large datasets
+- **QR code generation** — Return a QR code image for any shortened URL (`GET /api/shorturl/:shortId/qr`)
+- **Link management** — Deactivate or delete a short URL (`DELETE /api/shorturl/:shortId`)
+- **API key authentication** — Protect write endpoints behind API keys with per-key rate limits
+
 ## License
 
 [MIT](LICENSE)
