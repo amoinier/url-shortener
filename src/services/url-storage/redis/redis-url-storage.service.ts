@@ -7,6 +7,7 @@ import {
   IncrementUsageCountResponse
 } from '../url-storage.types'
 import { redisUrlStorageSchema } from './redis-url-storage.schema'
+import { SHORT_URL_PREFIX } from '../../../constant'
 
 export class RedisUrlStorageService implements UrlStorageInterface {
   private readonly redisService: RedisServiceInterface
@@ -16,7 +17,10 @@ export class RedisUrlStorageService implements UrlStorageInterface {
   }
 
   async getUrl(shortId: string): GetUrlResponse {
-    const url = await this.redisService.hGet(shortId, 'url')
+    const url = await this.redisService.hGet(
+      `${SHORT_URL_PREFIX}${shortId}`,
+      'url'
+    )
 
     if (!url) {
       throw new Error('URL not found')
@@ -27,7 +31,10 @@ export class RedisUrlStorageService implements UrlStorageInterface {
 
   async setUrl(shortId: string, url: string): SetUrlResponse {
     try {
-      await this.redisService.hSet(shortId, { url, usageCount: 0 })
+      await this.redisService.hSet(`${SHORT_URL_PREFIX}${shortId}`, {
+        url,
+        usageCount: 0
+      })
     } catch (error) {
       throw new Error('Failed to set URL', { cause: error })
     }
@@ -35,7 +42,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
 
   async getAllUrls(): GetAllUrlsResponse {
     try {
-      const keys = await this.redisService.scan('*')
+      const keys = await this.redisService.scan(`${SHORT_URL_PREFIX}*`)
 
       if (keys.length === 0) {
         return []
@@ -45,7 +52,10 @@ export class RedisUrlStorageService implements UrlStorageInterface {
         keys.map(async (key) => {
           const element = await this.redisService.hGetAll(key)
 
-          return redisUrlStorageSchema.parse({ ...element, shortId: key })
+          return {
+            shortId: key.replace(SHORT_URL_PREFIX, ''),
+            ...redisUrlStorageSchema.parse(element)
+          }
         })
       )
 
@@ -57,7 +67,11 @@ export class RedisUrlStorageService implements UrlStorageInterface {
 
   async incrementUsageCount(shortId: string): IncrementUsageCountResponse {
     try {
-      return this.redisService.hIncrBy(shortId, 'usageCount', 1)
+      return this.redisService.hIncrBy(
+        `${SHORT_URL_PREFIX}${shortId}`,
+        'usageCount',
+        1
+      )
     } catch (error) {
       throw new Error('Failed to increment usage count', { cause: error })
     }
