@@ -22,7 +22,8 @@
     "start:dev": "tsx watch src/main.ts",
     "start:debug": "tsx watch --inspect src/main.ts",
     "lint": "standard --fix",
-    "test": "jest",
+    "test": "jest --testPathPatterns='src/'",
+    "test:e2e": "jest --testPathPatterns='test/'",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
   },
@@ -76,15 +77,15 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "rootDir": ".",
+    "testRegex": ".*/(test|src)/.*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "coverage",
     "testEnvironment": "node"
   }
 }

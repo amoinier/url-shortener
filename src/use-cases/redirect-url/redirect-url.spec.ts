@@ -19,7 +19,7 @@ describe('redirectUrl use-case', () => {
       .mockRejectedValue(new Error('URL not found'))
 
     await expect(redirectUrl.execute({ shortId })).rejects.toThrow(
-      'Failed to redirect URL'
+      'URL not found'
     )
   })
 
@@ -32,7 +32,7 @@ describe('redirectUrl use-case', () => {
       .mockRejectedValue(new Error('Failed to increment usage count'))
 
     await expect(redirectUrl.execute({ shortId })).rejects.toThrow(
-      'Failed to redirect URL'
+      'Failed to increment usage count'
     )
   })
 

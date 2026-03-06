@@ -15,7 +15,7 @@ export async function shortUrlController(
     return res.json(shortUrl)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: z.treeifyError(error) })
+      return res.status(422).json({ error: z.treeifyError(error) })
     }
 
     return res.status(500).json({ error: 'Internal server error' })

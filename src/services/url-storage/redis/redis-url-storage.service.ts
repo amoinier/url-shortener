@@ -8,6 +8,7 @@ import {
 } from '../url-storage.types'
 import { redisUrlStorageSchema } from './redis-url-storage.schema'
 import { SHORT_URL_PREFIX } from '../../../constant'
+import { URLNotFoundError } from './redis-url-storage.errors'
 
 export class RedisUrlStorageService implements UrlStorageInterface {
   private readonly redisService: RedisServiceInterface
@@ -23,7 +24,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     )
 
     if (!url) {
-      throw new Error('URL not found')
+      throw new URLNotFoundError(`URL not found for shortId: ${shortId}`)
     }
 
     return url

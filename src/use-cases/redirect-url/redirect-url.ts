@@ -28,7 +28,7 @@ export class RedirectUrlUseCase implements RedirectUrlInterface {
     } catch (error) {
       console.error('Failed to redirect URL', { cause: error })
 
-      throw new Error('Failed to redirect URL', { cause: error })
+      throw error
     }
   }
 }
