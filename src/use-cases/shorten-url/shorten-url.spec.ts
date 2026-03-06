@@ -33,6 +33,6 @@ describe('shortenUrl use-case', () => {
 
     const result = await shortenUrl.execute({ url })
     expect(urlStorageServiceMock.setUrl).toHaveBeenCalledWith('abcd1234', url)
-    expect(result).toEqual({ shortId: 'abcd1234' })
+    expect(result).toEqual({ shortId: 'abcd1234', originalUrl: url })
   })
 })

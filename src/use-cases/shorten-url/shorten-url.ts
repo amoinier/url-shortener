@@ -24,7 +24,7 @@ export class ShortenUrlUseCase implements ShortenUrlInterface {
       const id = nanoid(SHORT_URL_LENGTH)
       await this.urlStorageService.setUrl(id, input.url)
 
-      return { shortId: id }
+      return { shortId: id, originalUrl: input.url }
     } catch (error) {
       console.error('Failed to shorten URL', { cause: error })
 
