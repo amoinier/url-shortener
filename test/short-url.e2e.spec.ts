@@ -12,7 +12,7 @@ describe('POST /api/shorturl', () => {
     expect(response.body).toHaveProperty('shortUrl')
     expect(response.body).toHaveProperty('originalUrl', 'https://example.com')
     expect(typeof response.body.shortUrl).toBe('string')
-    expect(response.body.shortUrl).toHaveLength(8)
+    expect(response.body.shortUrl).toHaveLength(10)
   })
 
   it('should return 400 for missing url', async () => {

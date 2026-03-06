@@ -2,9 +2,9 @@ import express from 'express'
 import { redirectUrl } from '../../use-cases/redirect-url'
 import { z } from 'zod'
 import { redirectUrlSchema } from './redirect-url.schema'
-import { URLNotFoundError } from '../../services/url-storage/redis/redis-url-storage.errors'
+import { URLNotFoundError } from '../../use-cases/redirect-url/redirect-url.errors'
 
-export async function redirectUrlController (
+export async function redirectUrlController(
   req: express.Request,
   res: express.Response
 ) {

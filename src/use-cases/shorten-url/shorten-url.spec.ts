@@ -18,18 +18,28 @@ describe('shortenUrl use-case', () => {
 
   it('should throw if storage fails', async () => {
     const url = 'https://example.com'
+    urlStorageServiceMock.getUrl = jest.fn().mockResolvedValue(null)
     urlStorageServiceMock.setUrl = jest
       .fn()
       .mockRejectedValue(new Error('Failed to set URL'))
 
     await expect(shortenUrl.execute({ url })).rejects.toThrow(
-      'Failed to shorten URL'
+      'Failed to set URL'
+    )
+  })
+
+  it('should throw if failed to generate unique ID', async () => {
+    const url = 'https://example.com'
+    urlStorageServiceMock.getUrl = jest.fn().mockResolvedValue(url)
+    await expect(shortenUrl.execute({ url })).rejects.toThrow(
+      'Failed to generate unique ID'
     )
   })
 
   it('should generate a short ID and store the URL', async () => {
     const url = 'https://example.com'
     urlStorageServiceMock.setUrl = jest.fn().mockResolvedValue(undefined)
+    urlStorageServiceMock.getUrl = jest.fn().mockResolvedValue(null)
 
     const result = await shortenUrl.execute({ url })
     expect(urlStorageServiceMock.setUrl).toHaveBeenCalledWith('abcd1234', url)

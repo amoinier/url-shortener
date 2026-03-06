@@ -4,11 +4,12 @@ import {
   RedirectUrlInterface,
   RedirectUrlResponse
 } from './redirect-url.types'
+import { URLNotFoundError } from './redirect-url.errors'
 
 export class RedirectUrlUseCase implements RedirectUrlInterface {
   private readonly urlStorageService: UrlStorageInterface
 
-  constructor ({
+  constructor({
     urlStorageService
   }: {
     urlStorageService: UrlStorageInterface
@@ -16,11 +17,17 @@ export class RedirectUrlUseCase implements RedirectUrlInterface {
     this.urlStorageService = urlStorageService
   }
 
-  async execute (input: RedirectUrlInput): RedirectUrlResponse {
+  async execute(input: RedirectUrlInput): RedirectUrlResponse {
     try {
       console.debug('Redirecting URL', { shortId: input.shortId })
 
       const url = await this.urlStorageService.getUrl(input.shortId)
+
+      if (!url) {
+        throw new URLNotFoundError(
+          `URL not found for shortId: ${input.shortId}`
+        )
+      }
 
       await this.urlStorageService.incrementUsageCount(input.shortId)
 

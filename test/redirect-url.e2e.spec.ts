@@ -26,12 +26,12 @@ describe('GET /api/shorturl/:shortId', () => {
   })
 
   it('should return 404 for non-existent shortId with valid length', async () => {
-    const response = await request(BASE_URL).get('/api/shorturl/zzzzzzzz')
+    const response = await request(BASE_URL).get('/api/shorturl/zzzzzzzzzz')
 
     expect(response.status).toBe(404)
     expect(response.body).toHaveProperty(
       'error',
-      'URL not found for shortId: zzzzzzzz'
+      'URL not found for shortId: zzzzzzzzzz'
     )
   })
 })
