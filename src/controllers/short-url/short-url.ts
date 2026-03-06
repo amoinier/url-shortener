@@ -7,7 +7,6 @@ export async function shortUrlController(
   req: express.Request,
   res: express.Response
 ) {
-  console.log('shortUrlController 1')
   try {
     const validatedUrl = shortUrlSchema.parse(req.body)
 
@@ -18,8 +17,6 @@ export async function shortUrlController(
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: z.treeifyError(error) })
     }
-
-    console.log(error)
 
     return res.status(500).json({ error: 'Internal server error' })
   }

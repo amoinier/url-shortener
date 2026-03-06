@@ -34,7 +34,7 @@ export class RedisService implements RedisServiceInterface {
     const result = await this.redisClient.ping()
 
     if (result !== 'PONG') {
-      console.log('Redis is not healthy')
+      console.debug('Redis is not healthy')
 
       return false
     }

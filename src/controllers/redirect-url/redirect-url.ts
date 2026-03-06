@@ -7,7 +7,6 @@ export async function redirectUrlController(
   req: express.Request,
   res: express.Response
 ) {
-  console.log('redirectUrlController 1')
   try {
     const validatedShortId = redirectUrlSchema.parse(req.params)
 
@@ -18,8 +17,6 @@ export async function redirectUrlController(
     return res.redirect(url)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.log(error)
-
       return res.status(400).json({ error: z.treeifyError(error) })
     }
 
