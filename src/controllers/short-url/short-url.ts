@@ -10,9 +10,9 @@ export async function shortUrlController(
   try {
     const validatedUrl = shortUrlSchema.parse(req.body)
 
-    const shortId = await shortenUrl.execute({ url: validatedUrl.url })
+    const shortUrl = await shortenUrl.execute({ url: validatedUrl.url })
 
-    return res.json({ shortId })
+    return res.json(shortUrl)
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: z.treeifyError(error) })

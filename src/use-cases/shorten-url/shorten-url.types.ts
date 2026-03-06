@@ -5,7 +5,7 @@ export interface ShortenUrlInterface {
 }
 
 export type ShortenUrlResponse = Promise<{
-  shortId: string
+  shortUrl: string
   originalUrl: string
 }>
 
