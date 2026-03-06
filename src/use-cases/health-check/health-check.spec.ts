@@ -33,8 +33,7 @@ describe('healthCheck use-case', () => {
   it('should return redis: false when Redis is not healthy', async () => {
     redisServiceMock.healthCheck = jest.fn().mockResolvedValue(false)
 
-    const result = await healthCheck.execute()
+    await expect(healthCheck.execute()).rejects.toThrow('Redis is not healthy')
     expect(redisServiceMock.healthCheck).toHaveBeenCalled()
-    expect(result).toEqual({ redis: false })
   })
 })
