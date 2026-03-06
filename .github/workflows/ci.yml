@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run unit tests
+        run: npx jest --testPathPatterns='src/'
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
+      - name: Start Redis
+        run: docker compose up redis -d --wait
+      - name: Build
+        run: npm run build
+      - name: Start app
+        run: node dist/main.js &
+        env:
+          PORT: 3000
+          REDIS_URL: redis://localhost:6379
+      - name: Wait for app
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3000/api/health > /dev/null 2>&1; then
+              echo "App is ready"
+              exit 0
+            fi
+            echo "Waiting for app... ($i/30)"
+            sleep 1
+          done
+          echo "App failed to start"
+          exit 1
+      - name: Run E2E tests
+        run: npx jest --testPathPatterns='test/'
+        env:
+          TEST_BASE_URL: http://localhost:3000
