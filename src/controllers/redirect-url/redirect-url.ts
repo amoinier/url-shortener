@@ -23,8 +23,6 @@ export async function redirectUrlController(
       return res.status(400).json({ error: z.treeifyError(error) })
     }
 
-    console.error('Failed to redirect URL', { cause: error })
-
     return res.status(500).json({ error: 'Internal server error' })
   }
 }

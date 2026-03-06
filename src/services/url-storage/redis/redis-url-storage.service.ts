@@ -3,7 +3,8 @@ import {
   GetUrlResponse,
   SetUrlResponse,
   GetAllUrlsResponse,
-  UrlStorageInterface
+  UrlStorageInterface,
+  IncrementUsageCountResponse
 } from '../url-storage.types'
 
 export class RedisUrlStorageService implements UrlStorageInterface {
@@ -27,8 +28,6 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     try {
       await this.redisService.hSet(shortId, { url, usageCount: 0 })
     } catch (error) {
-      console.error('Failed to set URL', { cause: error })
-
       throw new Error('Failed to set URL')
     }
   }
@@ -51,12 +50,10 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     return urls.filter((url) => !!url)
   }
 
-  async incrementUsageCount(shortId: string): Promise<number> {
+  async incrementUsageCount(shortId: string): IncrementUsageCountResponse {
     try {
       return this.redisService.hIncrBy(shortId, 'usageCount', 1)
     } catch (error) {
-      console.error('Failed to increment usage count', { cause: error })
-
       throw new Error('Failed to increment usage count')
     }
   }
