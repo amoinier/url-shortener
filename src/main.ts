@@ -5,7 +5,7 @@ import { redisService } from './services/redis'
 import cors from 'cors'
 import helmet from 'helmet'
 
-async function startServer() {
+async function startServer () {
   await redisService.init()
 
   const app = express()

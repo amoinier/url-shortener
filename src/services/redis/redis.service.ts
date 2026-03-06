@@ -17,13 +17,13 @@ type RedisClient = ReturnType<typeof redis.createClient>
 export class RedisService implements RedisServiceInterface {
   private readonly redisClient: RedisClient
 
-  constructor({ configService }: { configService: ConfigServiceInterface }) {
+  constructor ({ configService }: { configService: ConfigServiceInterface }) {
     this.redisClient = createClient({
       url: configService.config.REDIS_URL
     })
   }
 
-  async init(): InitReturnType {
+  async init (): InitReturnType {
     try {
       await this.redisClient.connect()
     } catch (error) {
@@ -31,7 +31,7 @@ export class RedisService implements RedisServiceInterface {
     }
   }
 
-  async healthCheck(): HealthCheckReturnType {
+  async healthCheck (): HealthCheckReturnType {
     const result = await this.redisClient.ping()
 
     if (result !== 'PONG') {
@@ -43,30 +43,30 @@ export class RedisService implements RedisServiceInterface {
     return true
   }
 
-  async hSet(
+  async hSet (
     key: string,
     field: Record<string, string | number>
   ): HSetReturnType {
     return this.redisClient.hSet(key, field)
   }
 
-  async hIncrBy(key: string, field: string, value: number): HIncrByReturnType {
+  async hIncrBy (key: string, field: string, value: number): HIncrByReturnType {
     return this.redisClient.hIncrBy(key, field, value)
   }
 
-  async hGet(key: string, field: string): HGetReturnType {
+  async hGet (key: string, field: string): HGetReturnType {
     return this.redisClient.hGet(key, field)
   }
 
-  async hGetAll(key: string): HGetAllReturnType {
+  async hGetAll (key: string): HGetAllReturnType {
     return this.redisClient.hGetAll(key)
   }
 
-  async keys(pattern: string): KeysReturnType {
+  async keys (pattern: string): KeysReturnType {
     return this.redisClient.keys(pattern)
   }
 
-  async scan(pattern: string, count = 100): ScanReturnType {
+  async scan (pattern: string, count = 100): ScanReturnType {
     const keys: string[] = []
     let cursor = '0'
 

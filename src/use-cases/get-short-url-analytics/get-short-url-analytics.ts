@@ -7,7 +7,7 @@ import {
 export class GetShortUrlAnalyticsUseCase implements GetShortUrlAnalyticsInterface {
   private readonly urlStorageService: UrlStorageInterface
 
-  constructor({
+  constructor ({
     urlStorageService
   }: {
     urlStorageService: UrlStorageInterface
@@ -15,7 +15,7 @@ export class GetShortUrlAnalyticsUseCase implements GetShortUrlAnalyticsInterfac
     this.urlStorageService = urlStorageService
   }
 
-  async execute(): GetShortUrlAnalyticsResponse {
+  async execute (): GetShortUrlAnalyticsResponse {
     try {
       console.debug('Getting short URL analytics')
       const urls = await this.urlStorageService.getAllUrls()

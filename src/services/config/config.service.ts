@@ -5,7 +5,7 @@ import { ConfigServiceInterface, EnvironmentVariables } from './config.types'
 export class ConfigService implements ConfigServiceInterface {
   public config: EnvironmentVariables
 
-  constructor(envConfig: DotenvConfigOutput) {
+  constructor (envConfig: DotenvConfigOutput) {
     try {
       const configSchema = z.object({
         PORT: z.coerce.number().default(3000),

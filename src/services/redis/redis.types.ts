@@ -1,3 +1,12 @@
+export type InitReturnType = Promise<void>
+export type HealthCheckReturnType = Promise<boolean>
+export type HSetReturnType = Promise<number>
+export type HGetReturnType = Promise<string | null>
+export type HIncrByReturnType = Promise<number>
+export type KeysReturnType = Promise<string[]>
+export type HGetAllReturnType = Promise<Record<string, string | number>>
+export type ScanReturnType = Promise<string[]>
+
 export interface RedisServiceInterface {
   init(): InitReturnType
   healthCheck(): HealthCheckReturnType
@@ -8,12 +17,3 @@ export interface RedisServiceInterface {
   hGetAll(key: string): HGetAllReturnType
   scan(pattern: string, count?: number): ScanReturnType
 }
-
-export type InitReturnType = Promise<void>
-export type HealthCheckReturnType = Promise<boolean>
-export type HSetReturnType = Promise<number>
-export type HGetReturnType = Promise<string | null>
-export type HIncrByReturnType = Promise<number>
-export type KeysReturnType = Promise<string[]>
-export type HGetAllReturnType = Promise<Record<string, string | number>>
-export type ScanReturnType = Promise<string[]>

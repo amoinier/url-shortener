@@ -3,7 +3,7 @@ import express from 'express'
 import { shortUrlSchema } from './short-url.schema'
 import { z } from 'zod'
 
-export async function shortUrlController(
+export async function shortUrlController (
   req: express.Request,
   res: express.Response
 ) {

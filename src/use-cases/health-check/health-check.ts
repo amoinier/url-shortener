@@ -7,11 +7,11 @@ import {
 export class HealthCheckUseCase implements HealthCheckUseCaseInterface {
   private readonly redisService: RedisServiceInterface
 
-  constructor({ redisService }: { redisService: RedisServiceInterface }) {
+  constructor ({ redisService }: { redisService: RedisServiceInterface }) {
     this.redisService = redisService
   }
 
-  async execute(): HealthCheckResponse {
+  async execute (): HealthCheckResponse {
     try {
       console.debug('Checking health')
 

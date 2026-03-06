@@ -48,7 +48,7 @@ describe('RedisUrlStorage', () => {
       const shortId = '123'
       redisClientMock.hSet = jest.fn().mockResolvedValue(1)
       const result = await redisUrlStorage.setUrl(shortId, url)
-      expect(result).toBe(void 0)
+      expect(result).toBeUndefined()
     })
   })
 

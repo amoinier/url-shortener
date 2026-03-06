@@ -12,7 +12,7 @@ const limiter = rateLimit({
   legacyHeaders: false
 })
 
-export function router() {
+export function router () {
   const router = express.Router()
 
   router.post('/shorturl', limiter, shortUrlController)

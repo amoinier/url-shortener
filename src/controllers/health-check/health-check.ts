@@ -1,7 +1,7 @@
 import express from 'express'
 import { healthCheck } from '../../use-cases/health-check'
 
-export async function healthCheckController(
+export async function healthCheckController (
   _req: express.Request,
   res: express.Response
 ) {

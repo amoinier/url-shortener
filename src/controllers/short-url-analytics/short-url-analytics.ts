@@ -1,7 +1,7 @@
 import { getShortUrlAnalytics } from '../../use-cases/get-short-url-analytics'
 import express from 'express'
 
-export async function shortUrlAnalyticsController(
+export async function shortUrlAnalyticsController (
   req: express.Request,
   res: express.Response
 ) {

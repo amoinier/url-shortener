@@ -1,12 +1,10 @@
-import { UrlStorageInterface } from '../../services/url-storage/url-storage.types'
-
-export interface ShortenUrlInterface {
-  execute(input: ShortenUrlInput): ShortenUrlResponse
-}
-
 export type ShortenUrlResponse = Promise<{
   shortUrl: string
   originalUrl: string
 }>
 
 export type ShortenUrlInput = { url: string }
+
+export interface ShortenUrlInterface {
+  execute(input: ShortenUrlInput): ShortenUrlResponse
+}
