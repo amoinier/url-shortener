@@ -5,6 +5,7 @@ import {
   HIncrByReturnType,
   HSetReturnType,
   KeysReturnType,
+  ScanReturnType,
   InitReturnType,
   RedisServiceInterface,
   HealthCheckReturnType
@@ -63,5 +64,22 @@ export class RedisService implements RedisServiceInterface {
 
   async keys(pattern: string): KeysReturnType {
     return this.redisClient.keys(pattern)
+  }
+
+  async scan(pattern: string, count = 100): ScanReturnType {
+    const keys: string[] = []
+    let cursor = '0'
+
+    do {
+      const result = await this.redisClient.scan(cursor, {
+        MATCH: pattern,
+        COUNT: count
+      })
+
+      cursor = String(result.cursor)
+      keys.push(...result.keys)
+    } while (cursor !== '0')
+
+    return keys
   }
 }

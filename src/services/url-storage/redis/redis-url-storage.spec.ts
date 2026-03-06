@@ -1,7 +1,4 @@
 import { RedisUrlStorageService } from './redis-url-storage.service'
-import { createClient, RedisClientType } from 'redis'
-import { ConfigMockService } from '../../config/config.mock'
-import { EnvironmentVariables } from '../../config/config.types'
 import { RedisMockService } from '../../redis/redis.mock'
 
 describe('RedisUrlStorage', () => {
@@ -57,19 +54,32 @@ describe('RedisUrlStorage', () => {
 
   describe('getAllUrls', () => {
     it('should return empty array if no URLs are found', async () => {
-      redisClientMock.keys = jest.fn().mockResolvedValue([])
+      redisClientMock.scan = jest.fn().mockResolvedValue([])
       const result = await redisUrlStorage.getAllUrls()
       expect(result).toEqual([])
     })
 
+    it('should throw an error if shortId is less than 8 characters', async () => {
+      const shortId = '123'
+      redisClientMock.scan = jest.fn().mockResolvedValue([shortId])
+      redisClientMock.hGetAll = jest.fn().mockResolvedValue(null)
+      await expect(redisUrlStorage.getAllUrls()).rejects.toThrow(
+        'Failed to get all URLs'
+      )
+    })
+
     it('should get all URLs from Redis', async () => {
       const urls = [
-        { shortId: '123', url: 'https://example.com', usageCount: 0 }
+        {
+          shortId: '12345678',
+          url: 'https://example.com',
+          usageCount: 0
+        }
       ]
-      redisClientMock.keys = jest.fn().mockResolvedValue(['123'])
+      redisClientMock.scan = jest.fn().mockResolvedValue(['12345678'])
       redisClientMock.hGetAll = jest
         .fn()
-        .mockResolvedValue(urls.find((url) => url.shortId === '123'))
+        .mockResolvedValue(urls.find((url) => url.shortId === '12345678'))
       const result = await redisUrlStorage.getAllUrls()
       expect(result).toEqual(urls)
     })

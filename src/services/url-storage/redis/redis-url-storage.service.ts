@@ -34,17 +34,25 @@ export class RedisUrlStorageService implements UrlStorageInterface {
   }
 
   async getAllUrls(): GetAllUrlsResponse {
-    const keys = await this.redisService.keys('*')
+    try {
+      const keys = await this.redisService.scan('*')
 
-    const urls = await Promise.all(
-      keys.map(async (key) => {
-        const element = await this.redisService.hGetAll(key)
+      if (keys.length === 0) {
+        return []
+      }
 
-        return redisUrlStorageSchema.parse(element)
-      })
-    )
+      const urls = await Promise.all(
+        keys.map(async (key) => {
+          const element = await this.redisService.hGetAll(key)
 
-    return urls.filter((url) => !!url)
+          return redisUrlStorageSchema.parse({ ...element, shortId: key })
+        })
+      )
+
+      return urls.filter((url) => !!url)
+    } catch (error) {
+      throw new Error('Failed to get all URLs', { cause: error })
+    }
   }
 
   async incrementUsageCount(shortId: string): IncrementUsageCountResponse {

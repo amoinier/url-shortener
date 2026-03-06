@@ -31,4 +31,8 @@ export class RedisMockService implements RedisServiceInterface {
   async hGetAll(key: string): Promise<Record<string, string | number>> {
     throw new Error('Not implemented')
   }
+
+  async scan(pattern: string, count = 100): Promise<string[]> {
+    throw new Error('Not implemented')
+  }
 }
