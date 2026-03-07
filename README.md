@@ -2,6 +2,12 @@
 
 A lightweight, self-hosted URL shortener built with Express 5 and Redis.
 
+## Live demo
+
+API is accessible on https://shorturlapi.amoinier.fr
+
+Web app that consume this app is available on https://shorturl.amoinier.fr/
+
 ## Features
 
 - Shorten any URL into a unique 8-character identifier
