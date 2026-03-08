@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { redirectUrlSchema } from './redirect-url.schema'
 import { URLNotFoundError } from '../../use-cases/redirect-url/redirect-url.errors'
 
-export async function redirectUrlController(
+export async function redirectUrlController (
   req: express.Request,
   res: express.Response
 ) {

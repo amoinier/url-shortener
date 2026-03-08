@@ -4,7 +4,7 @@ import { redirectUrlController } from './controllers/redirect-url/redirect-url'
 import { shortUrlAnalyticsController } from './controllers/short-url-analytics/short-url-analytics'
 import { healthCheckController } from './controllers/health-check/health-check'
 
-export function router() {
+export function router () {
   const router = express.Router()
 
   router.post('/shorturl', shortUrlController)

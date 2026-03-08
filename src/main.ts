@@ -13,7 +13,7 @@ const limiter = rateLimit({
   legacyHeaders: false
 })
 
-async function startServer() {
+async function startServer () {
   await redisService.init()
 
   const app = express()

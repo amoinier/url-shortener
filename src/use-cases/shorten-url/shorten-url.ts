@@ -10,7 +10,7 @@ import { MAX_RETRIES, SHORT_URL_LENGTH } from '../../constant'
 export class ShortenUrlUseCase implements ShortenUrlInterface {
   private readonly urlStorageService: UrlStorageInterface
 
-  constructor({
+  constructor ({
     urlStorageService
   }: {
     urlStorageService: UrlStorageInterface
@@ -18,7 +18,7 @@ export class ShortenUrlUseCase implements ShortenUrlInterface {
     this.urlStorageService = urlStorageService
   }
 
-  private async generateUniqueId(retries = 0): Promise<string> {
+  private async generateUniqueId (retries = 0): Promise<string> {
     if (retries > MAX_RETRIES) {
       throw new Error('Failed to generate unique ID')
     }
@@ -31,7 +31,7 @@ export class ShortenUrlUseCase implements ShortenUrlInterface {
     return id
   }
 
-  async execute(input: ShortenUrlInput): ShortenUrlResponse {
+  async execute (input: ShortenUrlInput): ShortenUrlResponse {
     try {
       console.debug('Shortening URL', { url: input.url })
       const id = await this.generateUniqueId()

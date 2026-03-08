@@ -12,11 +12,11 @@ import { SHORT_URL_PREFIX } from '../../../constant'
 export class RedisUrlStorageService implements UrlStorageInterface {
   private readonly redisService: RedisServiceInterface
 
-  constructor({ redisService }: { redisService: RedisServiceInterface }) {
+  constructor ({ redisService }: { redisService: RedisServiceInterface }) {
     this.redisService = redisService
   }
 
-  async getUrl(shortId: string): GetUrlResponse {
+  async getUrl (shortId: string): GetUrlResponse {
     const url = await this.redisService.hGet(
       `${SHORT_URL_PREFIX}${shortId}`,
       'url'
@@ -29,7 +29,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     return url
   }
 
-  async setUrl(shortId: string, url: string): SetUrlResponse {
+  async setUrl (shortId: string, url: string): SetUrlResponse {
     try {
       await this.redisService.hSet(`${SHORT_URL_PREFIX}${shortId}`, {
         url,
@@ -40,7 +40,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     }
   }
 
-  async getAllUrls(): GetAllUrlsResponse {
+  async getAllUrls (): GetAllUrlsResponse {
     try {
       const keys = await this.redisService.scan(`${SHORT_URL_PREFIX}*`)
 
@@ -65,7 +65,7 @@ export class RedisUrlStorageService implements UrlStorageInterface {
     }
   }
 
-  async incrementUsageCount(shortId: string): IncrementUsageCountResponse {
+  async incrementUsageCount (shortId: string): IncrementUsageCountResponse {
     try {
       return this.redisService.hIncrBy(
         `${SHORT_URL_PREFIX}${shortId}`,
