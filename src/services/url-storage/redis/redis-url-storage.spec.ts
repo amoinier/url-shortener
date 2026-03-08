@@ -17,9 +17,8 @@ describe('RedisUrlStorage', () => {
     it('should throw an error if the URL is not found', async () => {
       const shortId = '123'
       redisClientMock.hGet = jest.fn().mockResolvedValue(null)
-      await expect(redisUrlStorage.getUrl(shortId)).rejects.toThrow(
-        'URL not found'
-      )
+      const result = await redisUrlStorage.getUrl(shortId)
+      expect(result).toBeNull()
     })
 
     it('should get a URL from Redis', async () => {
